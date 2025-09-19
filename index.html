@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BakeryHero</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .main-product {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .product-details {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .product-category {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .product-image-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .slider-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .slider-btn.left {
+            left: 10px;
+        }
+
+        .slider-btn.right {
+            right: 10px;
+        }
+
+        .products-carousel {
+            width: 100%;
+            max-width: 1200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .products-container {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.5s ease;
+            padding: 10px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            flex: 0 0 250px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card:active {
+            animation: clickAnimation 0.2s ease;
+        }
+
+        @keyframes clickAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .card-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-description {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-price {
+            font-size: 1rem;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .view-more-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 8px 15px;
+            color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .view-more-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .carousel-btn.left {
+            left: 0;
+        }
+
+        .carousel-btn.right {
+            right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .main-product {
+                flex-direction: column;
+            }
+
+            .product-image {
+                height: 300px;
+            }
+
+            .product-card {
+                flex: 0 0 200px;
+            }
+
+            .card-image {
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .product-title {
+                font-size: 1.5rem;
+            }
+
+            .product-image {
+                height: 200px;
+            }
+
+            .product-card {
+                flex: 0 0 160px;
+            }
+
+            .card-image {
+                height: 100px;
+            }
+
+            .carousel-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>BakeryHero</h1>
+    </div>
+    <div class="main-product" id="main-product">
+        <div class="product-details" id="product-details">
+            <h2 class="product-title" id="main-title"></h2>
+            <p class="product-description" id="main-description"></p>
+            <p class="product-category" id="main-category"></p>
+            <p class="product-price" id="main-price"></p>
+        </div>
+        <div class="product-image-container" id="image-container">
+            <img class="product-image" id="main-image" src="" alt="">
+            <button class="slider-btn left" onclick="slideImage('prev')">&#8249;</button>
+            <button class="slider-btn right" onclick="slideImage('next')">&#8250;</button>
+        </div>
+    </div>
+    <div class="products-carousel">
+        <button class="carousel-btn left" onclick="slideCarousel('prev')">&#8249;</button>
+        <div class="products-container" id="products"></div>
+        <button class="carousel-btn right" onclick="slideCarousel('next')">&#8250;</button>
+    </div>
+
+    <script>
+        const productsData = [
+            {
+                id: 1,
+                title: "Chocolate Croissant",
+                description: "Buttery, flaky croissant filled with rich dark chocolate, perfect for a morning treat or an afternoon indulgence. Made with premium ingredients and baked fresh daily.",
+                category: "Pastry",
+                price: 3.99,
+                images: [
+                    "1.png",
+                    "4.png"
+                ]
+            },
+            {
+                id: 2,
+                title: "Sourdough Bread",
+                description: "Artisan sourdough with a crispy crust and soft, chewy interior. Fermented for 24 hours to develop a tangy flavor, ideal for sandwiches or toasting.",
+                category: "Bread",
+                price: 5.49,
+                images: [
+                    "2.png",
+                    "1.png"
+                ]
+            },
+            {
+                id: 3,
+                title: "Blueberry Muffin",
+                description: "Moist and fluffy muffin packed with fresh, juicy blueberries. Topped with a light crumble for added texture, perfect for breakfast or a snack.",
+                category: "Pastry",
+                price: 2.99,
+                images: [
+                    "3.png",
+                    "4.png"
+                ]
+            },
+            {
+                id: 4,
+                title: "Cinnamon Roll",
+                description: "Sweet, gooey roll swirled with cinnamon and topped with rich cream cheese frosting. A classic treat that’s soft, warm, and indulgent.",
+                category: "Pastry",
+                price: 4.29,
+                images: [
+                    "4.png",
+                    "2.png"
+                ]
+            },
+            {
+                id: 5,
+                title: "test bakery item",
+                description: "Sweet, gooey roll swirled with cinnamon and topped with rich cream cheese frosting. A classic treat that’s soft, warm, and indulgent.",
+                category: "Pastry",
+                price: 4.29,
+                images: [
+                    "3.png",
+                    "2.png"
+                ]
+            }
+        ];
+
+        let currentProductId = 1;
+        let currentImageIndex = 0;
+
+        function displayMainProduct(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            currentProductId = productId;
+            currentImageIndex = 0;
+
+            document.getElementById('main-title').textContent = product.title;
+            document.getElementById('main-description').textContent = product.description;
+            document.getElementById('main-category').textContent = `Category: ${product.category}`;
+            document.getElementById('main-price').textContent = `$${product.price.toFixed(2)}`;
+            document.getElementById('main-image').src = product.images[currentImageIndex];
+            document.getElementById('main-image').alt = product.title;
+        }
+
+        function slideImage(direction) {
+            const product = productsData.find(p => p.id === currentProductId);
+            if (!product) return;
+
+            if (direction === 'next') {
+                currentImageIndex = (currentImageIndex + 1) % product.images.length;
+            } else {
+                currentImageIndex = (currentImageIndex - 1 + product.images.length) % product.images.length;
+            }
+
+            const image = document.getElementById('main-image');
+            image.style.transform = `translateX(${direction === 'next' ? '-100%' : '100%'})`;
+            setTimeout(() => {
+                image.src = product.images[currentImageIndex];
+                image.style.transform = 'translateX(0)';
+            }, 300);
+        }
+
+        function displayProducts() {
+            const productsContainer = document.getElementById('products');
+            productsContainer.innerHTML = '';
+
+            productsData.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                    <img src="${product.images[0]}" alt="${product.title}" class="card-image">
+                    <h2 class="card-title">${product.title}</h2>
+                    <p class="card-description">${product.description}</p>
+                    <p class="card-price">$${product.price.toFixed(2)}</p>
+                    <button class="view-more-btn" onclick="displayMainProduct(${product.id})">View More</button>
+                `;
+                productsContainer.appendChild(productCard);
+            });
+        }
+
+        let carouselIndex = 0;
+        function slideCarousel(direction) {
+            const container = document.getElementById('products');
+            const cardWidth = 270; // 250px card + 20px gap
+            const maxIndex = Math.max(0, productsData.length - Math.floor(window.innerWidth / cardWidth));
+
+            if (direction === 'next' && carouselIndex < maxIndex) {
+                carouselIndex++;
+            } else if (direction === 'prev' && carouselIndex > 0) {
+                carouselIndex--;
+            }
+
+            container.style.transform = `translateX(-${carouselIndex * cardWidth}px)`;
+        }
+
+        // Touch swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.getElementById('products').addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.getElementById('products').addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) {
+                slideCarousel('next');
+            } else if (touchEndX - touchStartX > 50) {
+                slideCarousel('prev');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayProducts();
+            displayMainProduct(1);
+        });
+    </script>
+</body>
+</html>
